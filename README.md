@@ -48,9 +48,14 @@ docker compose up -d --build
 
 Logs from the app flow to `logs/spring-log-demo-*` indices in Elasticsearch via Filebeat and Logstash.
 
+### Configure Kibana Data View
+1. Open Kibana (`http://localhost:5601`) and choose **Explore on my own** if prompted.
+2. Navigate to **Stack Management → Data Views** and click **Create data view**.
+3. Set the name (e.g., `Spring Log Demo`) and index pattern to `spring-log-demo-*`.
+4. Select `@timestamp` as the time field and save. The Discover app now lists the JSON logs ingested from the service.
+
 ### Tearing Down
 ```bash
 docker compose down -v
 ```
 This stops the containers and removes the attached `es-data` and `app-logs` volumes.
-
