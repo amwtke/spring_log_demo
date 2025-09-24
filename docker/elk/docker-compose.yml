@@ -1,0 +1,66 @@
+version: "3.8"
+
+services:
+  app:
+    build:
+      context: ../..
+    container_name: spring-log-app
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+      - LOG_PATH=/app/logs
+    volumes:
+      - app-logs:/app/logs
+    ports:
+      - "8080:8080"
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.13.4
+    container_name: elk-elasticsearch
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - ES_JAVA_OPTS=-Xms1g -Xmx1g
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - es-data:/usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.13.4
+    container_name: elk-kibana
+    depends_on:
+      - elasticsearch
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    ports:
+      - "5601:5601"
+
+  logstash:
+    image: docker.elastic.co/logstash/logstash:8.13.4
+    container_name: elk-logstash
+    depends_on:
+      - elasticsearch
+    ports:
+      - "5044:5044"
+    volumes:
+      - ./logstash/pipeline.conf:/usr/share/logstash/pipeline/logstash.conf:ro
+
+  filebeat:
+    image: docker.elastic.co/beats/filebeat:8.13.4
+    container_name: elk-filebeat
+    user: root
+    depends_on:
+      - logstash
+      - app
+    command: ["--strict.perms=false"]
+    volumes:
+      - ./filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
+      - app-logs:/host_logs:ro
+
+volumes:
+  es-data:
+  app-logs:

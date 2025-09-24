@@ -13,6 +13,6 @@ public class GreetingAuditService {
 
     @Async("mdcExecutor")
     public void logGreeting(String name) {
-        log.info("异步处理", kv("name", name));
+        log.info("异步处理-> {}", name);
     }
 }

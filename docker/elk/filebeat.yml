@@ -1,0 +1,17 @@
+filebeat.inputs:
+  - type: filestream
+    id: spring-log-demo
+    paths:
+      - /host_logs/demo-mdc.log
+    parsers:
+      - ndjson:
+          overwrite_keys: true
+          add_error_key: true
+          expand_keys: true
+    fields:
+      service.name: spring-log-demo
+      environment: local
+    fields_under_root: true
+
+output.logstash:
+  hosts: ["logstash:5044"]
