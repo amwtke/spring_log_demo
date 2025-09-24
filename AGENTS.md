@@ -10,7 +10,7 @@
 - `mvn test` executes the JUnit/Spring Boot test suite; add `-Dspring.profiles.active=local` when exercising profile-specific config.
 
 ## Coding Style & Naming Conventions
-- Use Java 25 language level (see `pom.xml` compiler `release` setting) with 4-space indentation and braces on the same line.
+- Use Java 17 language level (see `pom.xml` compiler `release` setting) with 4-space indentation and braces on the same line.
 - Package classes by feature (e.g., `async`, `web`) and favor descriptive names like `TraceMdcFilter` over abbreviations.
 - Apply Spring annotations over explicit XML, and keep logging structured via `log.info("message", kv("userId", id))`.
 

@@ -6,7 +6,7 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>demo-mdc</name>
     <properties>
-        <java.version>24</java.version>
+        <java.version>17</java.version>
         <spring.boot.version>3.5.3</spring.boot.version>
     </properties>
 
@@ -47,13 +47,21 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring.boot.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.11.0</version>
                 <configuration>
-                    <release>25</release>
+                    <release>17</release>
                 </configuration>
             </plugin>
         </plugins>
